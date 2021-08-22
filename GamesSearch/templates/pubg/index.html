@@ -5,7 +5,7 @@
         <title>GS - Games Search</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     </head>
-    <body style="background-image: url('../static/img/PUBG_BG.png'); background-repeat: no-repeat;">
+    <body style="background-image: url('../static/img/PUBG/PUBG_BG.png'); background-repeat: no-repeat;">
         <nav class="navbar  navbar-expand-sm bg-secondary navbar-dark">
             <a class="navbar-brand" href="/">GS</a>
             <ul class="navbar-nav">
@@ -26,7 +26,7 @@
             <div class="row text-center">
 				<div class="col text-center" style="background-color: rgba(255, 255, 255, 0.5)">
                     <br><br>
-                    <img style="-webkit-touch-callout:none; pointer-events : none; opacity: 1.0; height: 350px;" src="{{ url_for('static', filename='img/PUBG_LOGO.png') }}">
+                    <img style="-webkit-touch-callout:none; pointer-events : none; opacity: 1.0; height: 350px;" src="{{ url_for('static', filename='img/PUBG/PUBG_LOGO.png') }}">
                     <form class="form-inline" autocomplete="off" action="/pubg/Player" method="GET">
                         <input type="text" class="form-control" id="name" name="nickname" placeholder="닉네임" style="width: 89%;">&nbsp;
                         <button type="submit" class="btn btn-dark" style="width: 10%;">찾기</button>
