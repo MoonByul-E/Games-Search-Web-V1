@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>GS - GamesSearch</title>
+        <link rel="stylesheet" href="css/style.css">
+        <style>
+            body{
+                background-image: url("img/LOL_BG.png");
+            }
+        </style>
+    </head>
+    <body>
+        <nav>
+            <ul class="nav-container">
+                <button class="nav-item"> <a href="/" style="font-size: 25px; color: white;"><strong>GS</strong></a></li>
+                <button class="nav-item"><a href="/lol">League of Legends</a></button>
+                <button class="nav-item active"><a href="/bser">Eternal Return</a></button>
+                <button class="nav-item"><a href="/pubg">PUBG: BATTLEGROUNDS</a></button>
+            </ul>
+        </nav>
+
+        <br><br>
+        <div class="wrapper">
+            <div class="content">
+                <img style="opacity: 1.0;" src="img/LOL_LOGO.png">
+                <form class="form-inline" autocomplete="off" action="/bser/Player" method="GET">
+                    <input type="text" class="form-control" id="search" name="nickname" placeholder="닉네임">&nbsp;
+                    <button type="submit" id="btn">찾기</button>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

@@ -16,9 +16,34 @@
                 -webkit-user-select: none;
                 user-select: none;
             }
+            img {
+                -webkit-touch-callout:none;
+                pointer-events : none;
+            }
+            .colors {
+                background-color: rgba(0, 0, 0, 0.8)
+            }
+            .img-with-text {
+                text-align: justify;
+                width: [width of img];
+            }
+
+            .img-with-text img {
+                display: block;
+                margin: 0 auto;
+            }
+
+            #wrapper {
+                display: table;
+            }
+        
+            #content {
+                display: table-cell;
+                vertical-align: middle;
+            }
         </style>
         <title>GS - Games Search</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body style="background-image: url('../static/img/BSER/BSER_BG_2.png');">
         <nav class="navbar  navbar-expand-sm bg-secondary navbar-dark">
@@ -41,7 +66,7 @@
             <div class="row text-center">
 				<div class="col text-center" style="background-color: rgba(255, 255, 255, 0.5)">
                     <br><br>
-                    <img style="-webkit-touch-callout:none; pointer-events : none; opacity: 1.0;" src="{{ url_for('static', filename='img/BSER/BSER_LOGO.png') }}">
+                    <a href="/bser"><img style="opacity: 1.0;" src="{{ url_for('static', filename='img/BSER/BSER_LOGO.png') }}"></a>
                     <form class="form-inline" autocomplete="off" action="/bser/Player" method="GET">
                         <input type="text" class="form-control" id="name" name="nickname" placeholder="닉네임" style="width: 89%;">&nbsp;
                         <button type="submit" class="btn btn-dark" style="width: 10%;">찾기</button>
@@ -56,15 +81,113 @@
             <div class="row text-center">
 				<div class="col text-center" style="background-color: rgba(255, 255, 255, 0.5)">
                     <br><br>
-                    <h2 style="font-family: GowunBatang-Regular;"><strong>{{playerName}}</strong> 님 전적 결과</h2>
-                    <br><br>
-
-                    
+                    <h2 style="font-family: GowunBatang-Regular; background-color: rgba(255, 255, 255, 0.8);"><strong>{{playerName}}</strong> 님 전적 결과</h2>
+                    <button type="button" onClick="location.href='/bser/Recall?nickname={{playerName}}'" class="btn btn-dark float-right">전적 갱신</button>
+                    <a class="float-right align-text-bottom" style="background-color: rgba(255, 255, 255, 0.8); text-decoration:none; color: black; font-size: 12px;">최근 전적 갱신<br>{{updatedTime}} 전</a>
+                    <br>
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#normal" style="color: black;">일반</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a href="#" id="rankDropDown" class="nav-link dropdown-toggle" data-toggle="dropdown" style="color: black;">경쟁전<span class="caret"></span></a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#season1" data-toggle="tab">시즌 1</a>
+                                <a class="dropdown-item" href="#season2" data-toggle="tab">시즌 2</a>
+                                <a class="dropdown-item" href="#season3" data-toggle="tab">시즌 3</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#character" style="color: black;">캐릭터</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="normal">
+                            {% for i in range(teamType|length) %}
+                            <div class="col-xs-9 text-center" style="background-color: rgba(255, 255, 255, {{color[i]}}); width: 33%; float: left;">
+                                <br>
+                                <h4 style="font-family: GowunBatang-Regular;"><strong>{{teamType_Kor[i]}}</strong></h4>
+                                <img src="{{ url_for('static', filename=normal[teamType[i]]['tier']) }}" style="height: 200px;">
+                                <h4 style="font-family: GowunBatang-Regular;"><strong>{{normal[teamType[i]]['mmr']}} MMR</strong></h4>
+                                <br>
+                                <a style="text-decoration:none; color: black;"><strong>{{normal[teamType[i]]['totalGames']}}게임 {{normal[teamType[i]]['totalWins']}}승</strong></a><br>
+                                <a style="text-decoration:none; color: black;"><strong>상위 {{normal[teamType[i]]['rankRate']}}%</strong></a>
+                                <br><br>
+                                <div style="border: 1px; float: left; width: 50%; background-color: rgba(0, 0, 0, 0.3);">
+                                    <p><strong>평균 순위<br/>#{{normal[teamType[i]]['avgRank']}}</strong></p>
+                                </div>
+                                <div style="border: 1px; float: left; width: 50%; background-color: rgba(0, 0, 0, 0.5);">
+                                    <p><strong>평균 킬<br/>{{normal[teamType[i]]['avgKills']}} 킬</strong></p>
+                                </div>
+                                <br>
+                                <div style="border: 1px; float: left; width: 50%; background-color: rgba(0, 0, 0, 0.5);">
+                                    <p><strong>평균 어시스트<br/>{{normal[teamType[i]]['avgAssistants']}}</strong></p>
+                                </div>
+                                <div style="border: 1px; float: left; width: 50%; background-color: rgba(0, 0, 0, 0.3);">
+                                    <p><strong>평균 동물 킬<br/>{{normal[teamType[i]]['avgHunts']}} 킬</strong></p>
+                                </div>
+                                <div style="border: 1px; float: left; width: 50%; background-color: rgba(0, 0, 0, 0.3);">
+                                    <p><strong>TOP 1<br/>{{normal[teamType[i]]['top1']}} %</strong></p>
+                                </div>
+                                <div style="border: 1px; float: left; width: 50%; background-color: rgba(0, 0, 0, 0.5);">
+                                    <p><strong>TOP 2<br/>{{normal[teamType[i]]['top2']}} %</strong></p>
+                                </div>
+                                <br>
+                                <div style="border: 1px; float: left; width: 50%; background-color: rgba(0, 0, 0, 0.5);">
+                                    <p><strong>TOP 3<br/>{{normal[teamType[i]]['top3']}} %</strong></p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <div class="col-xs-9" style="width: 100%; float: left;">
+                                <br><br>
+                                <h2 style="font-family: GowunBatang-Regular; background-color: rgba(255, 255, 255, 0.8);"><strong>게임 기록</strong></h2>
+                                <br><br>
+                                {% for i in range(games|length) %}
+                                <div style="border: 1px; float: left; width: 100%; display: block; background-color: rgba(0, 195, 255, 0.5); border-radius: 1em; margin: 10px 10px 10px 10px; padding: 10px 10px 10px 10px;">
+                                    <div style="width:100%; height:100%; display: block;"> 
+                                        <div id="wrapper">
+                                            <div id="content">
+                                                <h4 style="float: left; display: block;"># {{games[i]['player']['playerRank']}}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="width:100%; height:100%;"> 
+                                        <div id="content">
+                                            <span style="float: left; display: table-cell; vertical-align : text-bottom;">{{games[i]['teamMode']}}</span>
+                                        </div>
+                                        
+                                        <!--<img src="{{ url_for('static', filename=games[i]['player']['playerCharactionImgMini']) }}" style="float: left; width: 10%; display:block; align-self:center; position: static;">
+                                        <p style="float: left; top: 30%; vertical-align: text-bottom;">{{games[i]['player']['playerCharacterKor']}}</p>-->
+                                    </div>
+                                    <div style="display: inline;">
+                                        <img src="{{ url_for('static', filename=games[i]['player']['playerCharactionImgMini']) }}" style="float: left; width: 10%;">
+                                    </div>
+                                </div>
+                                
+                                <p></p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="season1">
+                            season1 메뉴
+                        </div>
+                        <div class="tab-pane fade" id="season2">
+                            season2 메뉴
+                        </div>
+                        <div class="tab-pane fade" id="season3">
+                            season3 메뉴
+                        </div>
+                        <div class="tab-pane fade" id="character">
+                            <p>Show Character</p>
+                        </div>
+                    </div>
+                    <br>
                 </div>
             </div>
         </div>
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
     </body>
 </html>
